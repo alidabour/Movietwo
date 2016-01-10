@@ -65,41 +65,10 @@ public class DetailMovieFragment extends Fragment {
         }
         view=inflater.inflate(R.layout.fragment_detail_movie, container, false);
         final Intent intent=getActivity().getIntent();
-//        videoAdapter = new ArrayAdapter<String>(
-//                getActivity(),
-//                R.layout.btn_list_item,
-//                R.id.btn_tv,
-//                new ArrayList<String>()
-//        );
-
          listView = (ListView) view.findViewById(R.id.btn_LV);
 
 
-//        Button button;//=(Button) view.findViewById(R.id.btn_tv);
-//        button= (Button) listView.getChildAt(0);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videos[0])));
-//            }
-//        });
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-//                Button button=(Button) view.findViewById(R.id.btn_tv);
-//                final int x=position;
-//               button= (Button) listView.getChildAt(position);
-//                       button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videos[position])));
-//                    }
-//                });
-//               // startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(videos[position])));
-//
-//            }
-//        });
+
         videoAdapter =new CustomBtnAdapter(getActivity(),new ArrayList<String>());
 
 
@@ -169,12 +138,6 @@ public class DetailMovieFragment extends Fragment {
             linearLayout.setVisibility(View.INVISIBLE);
         }
 
-//        else if(intent==null){
-//            movieName="Try again";
-//            TextView orTV =
-//                    ((TextView) view.findViewById(R.id.movieName));
-//            orTV.setText(movieName);
-//        }
         return view;
     }
 
