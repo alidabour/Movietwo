@@ -33,7 +33,7 @@ import java.net.URL;
  */
 
 public class MainActivityFragment extends Fragment {
-    final String api_key = "00f7dbb0c5c7148cc9778dbb6da2ba35";
+    final String api_key = "Your key";
 
     public interface Callback {
         /**
