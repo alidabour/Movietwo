@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivityFragment extends Fragment {
-    final static String api_key = "00f7dbb0c5c7148cc9778dbb6da2ba35";
+    final static String api_key = "Your Key";
     String sort_by = "popularity.desc";
     String poster_path[];
     JSONArray jsonArray;
