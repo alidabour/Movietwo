@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,10 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+
 public class DetailMovieFragment extends Fragment {
+    static String jsonArrayCB = null;
     View view;
     String poster_path;
     String movieName ;
@@ -48,11 +46,10 @@ public class DetailMovieFragment extends Fragment {
     String name[];
     JSONObject child;
     JSONObject childR;
-     static String jsonArrayCB=null;
-    private CustomBtnAdapter videoAdapter;
-    private ArrayAdapter<String> reviewAdapter;
     Button button;
     ListView listView;
+    private CustomBtnAdapter videoAdapter;
+    private ArrayAdapter<String> reviewAdapter;
     public DetailMovieFragment() {
     }
     @Override

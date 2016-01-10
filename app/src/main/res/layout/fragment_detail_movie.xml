@@ -2,33 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.ali.movietwo.DetailMovieFragment"
-    tools:showIn="@layout/activity_detail_movie"
-    android:id="@+id/detailMovie"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/detailMovie"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#212121"
+        android:orientation="vertical"
+    tools:context="com.example.ali.movietwo.DetailMovieFragment"
+        tools:showIn="@layout/activity_detail_movie">
+    <TextView
         android:id="@+id/movieName"
-        android:text="MovieName"
-        android:textSize="35sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#ffff00"
         android:gravity="center"
+        android:text="MovieName"
+        android:textColor="#212121"
+        android:textSize="35sp"
         />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
     <ImageView
-        android:layout_weight="2"
+        android:id="@+id/image_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/image_detail"
+        android:layout_weight="2"
         android:src="@mipmap/ic_launcher"
          />
 <LinearLayout
@@ -37,70 +39,70 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_vertical_margin">
     <TextView
+        android:id="@+id/releaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#212121"
-        android:id="@+id/releaseDate"
         android:textSize="18sp"
 
         />
 
     <TextView
+        android:id="@+id/voteAverageTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#76ff03"
-        android:textSize="18sp"
 
-        android:id="@+id/voteAverageTV"
+        android:textSize="18sp"
 
          />
     <Button
+        android:id="@+id/favBN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add to favorite"
-        android:id="@+id/favBN"/>
+        android:text="Add to favorite" />
 
 </LinearLayout>
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Trailers :"
         android:textColor="#212121"
-        android:textSize="18dp"
-        android:text="Trailers :"/>
+        android:textSize="18dp" />
     <ListView
-        android:nestedScrollingEnabled="false"
-        android:layout_width="match_parent"
         android:id="@+id/btn_LV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_height="wrap_content">
+        android:nestedScrollingEnabled="false">
     </ListView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Overview :"
         android:textColor="#212121"
-        android:textSize="18dp"
-        android:text="Overview :"/>
+        android:textSize="18dp" />
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#212121"
         android:id="@+id/overviewTV"
-       android:text="overview" />
-    <TextView
-        android:layout_weight="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="overview"
+        android:textColor="#212121" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Reviews :"
         android:textColor="#212121"
-        android:textSize="18dp"
-        android:text="Reviews :"/>
+        android:textSize="18dp" />
 
 
     <ListView
-        android:nestedScrollingEnabled="false"
-        android:layout_width="match_parent"
+        android:id="@+id/review_LV"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/review_LV">
+        android:nestedScrollingEnabled="false">
 
     </ListView>
 

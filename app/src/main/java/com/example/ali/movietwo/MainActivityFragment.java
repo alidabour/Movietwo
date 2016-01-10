@@ -13,9 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,23 +26,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-
 public class MainActivityFragment extends Fragment {
-    final String api_key = "Your key";
-
-    public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        public void onItemSelected(String jsonArrayCB);
-    }
-    //private ArrayAdapter<String> movieAdapter;
+    final static String api_key = "00f7dbb0c5c7148cc9778dbb6da2ba35";
     String sort_by = "popularity.desc";
-    //String url ;
-    //String test;
     String poster_path[];
     JSONArray jsonArray;
     JSONObject child;
@@ -55,8 +39,6 @@ public class MainActivityFragment extends Fragment {
     private ImageAdapter imageAdapter;
     public MainActivityFragment() {
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,8 +85,7 @@ public class MainActivityFragment extends Fragment {
             else //if(sortType.equals("favorites"))
                  {
                 JSONObject child;
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String sharedPreferencesString =null;
+                     String sharedPreferencesString;
                      sharedPreferencesString=sharedPreferences.getString("path", "");
                      Log.v("SharedP","Hey+" + sharedPreferencesString);
 
@@ -114,7 +95,6 @@ public class MainActivityFragment extends Fragment {
                     Log.v("S Paths", paths);
                     int total = sharedPreferences.getInt("total", 0);
 
-                    JSONArray jsonArray1 = new JSONArray();
                     String path_url[] = new String[total];
                     poster_path = new String[total];
                     path_url[0] = "";
@@ -128,20 +108,7 @@ public class MainActivityFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-               /* for (int i = 0; i < paths.length(); i++) {
-                    if (paths.charAt(i) != '*') {
-                        path_url[j] += paths.charAt(i);
-                    } else {
-                        Log.v("Paths", path_url[j]);
-                        try {
-                            JSONObject jsonObject = new JSONObject(path_url[j]);
-                            jsonArray.put(jsonObject);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        j++;
-                    }
-                }*/
+
                     Log.v("JsonArray length", String.valueOf(jsonArray.length()));
                     try {
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -171,8 +138,6 @@ public class MainActivityFragment extends Fragment {
                 try { ((Callback) getActivity()).onItemSelected(
                         jsonArray.getJSONObject(position).toString()
                     );
-//                    intent = new Intent(getActivity(),DetailMovie.class)
-//                            .putExtra("json",jsonArray.getJSONObject(position).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -182,6 +147,14 @@ public class MainActivityFragment extends Fragment {
 
 
     }
+
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(String jsonArrayCB);
+    }
+
     public class FetchURL extends AsyncTask<String, Void, String[]> {
         private String[] getDataFromJson(String movieStr) throws JSONException{
             JSONObject movieJson = new JSONObject(movieStr);
@@ -203,17 +176,7 @@ public class MainActivityFragment extends Fragment {
             if (params.length == 0) {
                 return null;
             }
-//            SharedPreferences sharedPreferences =
-//                    PreferenceManager.getDefaultSharedPreferences(getActivity());
-//            String sortType = sharedPreferences.getString(
-//                    getString(R.string.pref_sort_key),
-//                    getString(R.string.pref_sort_popular)
-//            );
-//            if(sortType.equals(getString(R.string.pref_sort_popular))){
-//                sort_by=getString(R.string.pref_sort_popular);
-//            }else if (sortType.equals(getString(R.string.pref_sort_highRated))){
-//                sort_by=getString(R.string.pref_sort_highRated);
-//            }
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try{

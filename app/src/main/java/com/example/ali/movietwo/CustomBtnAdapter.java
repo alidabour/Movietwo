@@ -1,6 +1,6 @@
 package com.example.ali.movietwo;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,20 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 
 import java.util.ArrayList;
 
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 
 /**
  * Created by ali on 28/12/15.
  */
 public class CustomBtnAdapter extends ArrayAdapter<String> {
-    LayoutInflater inflater;
-    private String[] video;
     String[]  url;
     ArrayList<String> name;
     Context context;
@@ -50,7 +46,7 @@ public class CustomBtnAdapter extends ArrayAdapter<String> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
         if (convertView == null ){
-            LayoutInflater vi = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = vi.inflate(R.layout.btn_list_item, null);
         }
         Button btn = (Button)rowView.findViewById(R.id.btn_tv );
