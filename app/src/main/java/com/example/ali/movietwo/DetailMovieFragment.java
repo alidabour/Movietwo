@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -37,17 +38,14 @@ public class DetailMovieFragment extends Fragment {
     static String jsonArrayCB = null;
     View view;
     String poster_path;
-    String movieName ;
-    String releaseDate;
-    String overview;
-    String voteAverage;
     String id;
     String videos[];
     String name[];
     JSONObject child;
     JSONObject childR;
-    Button button;
-    ListView listView;
+    Button addToFavBt;
+    ListView videoListView;
+    ListView reviewListView;
     private CustomBtnAdapter videoAdapter;
     private ArrayAdapter<String> reviewAdapter;
     public DetailMovieFragment() {
@@ -57,24 +55,18 @@ public class DetailMovieFragment extends Fragment {
                              final Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         if (arguments != null) {
-            jsonArrayCB=arguments.getString("json");
-
+            jsonArrayCB = arguments.getString("json");
         }
         view=inflater.inflate(R.layout.fragment_detail_movie, container, false);
         final Intent intent=getActivity().getIntent();
-         listView = (ListView) view.findViewById(R.id.btn_LV);
 
-
-
-        videoAdapter =new CustomBtnAdapter(getActivity(),new ArrayList<String>());
-
-
+        videoListView = (ListView) view.findViewById(R.id.btn_LV);
+        videoAdapter = new CustomBtnAdapter(getActivity(), new ArrayList<String>());
         reviewAdapter = new ArrayAdapter<String>(getActivity(),R.layout.review_list_item,R.id.review_tv,new ArrayList<String>());
-        ListView listView1 = (ListView) view.findViewById(R.id.review_LV);
-        listView1.setAdapter(reviewAdapter);
-        button=(Button) view.findViewById(R.id.favBN);
-        button.setOnClickListener(new View.OnClickListener(){
-
+        reviewListView = (ListView) view.findViewById(R.id.review_LV);
+        reviewListView.setAdapter(reviewAdapter);
+        addToFavBt = (Button) view.findViewById(R.id.favBN);
+        addToFavBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -82,7 +74,6 @@ public class DetailMovieFragment extends Fragment {
                 String paths = sharedPreferences.getString("path", "");
                 int total;
                 total=sharedPreferences.getInt("total",0);
-
                 try {
                     paths+=new JSONObject(jsonArrayCB);
                     editor.putString("path",paths +",");
@@ -92,49 +83,45 @@ public class DetailMovieFragment extends Fragment {
                     e.printStackTrace();
                 }
                 editor.apply();
-
-                Log.v("Path",paths );
-                Log.v("Total", String.valueOf(total));
-
+                //Log.v("Path",paths );
+                //Log.v("Total", String.valueOf(total));
             }
         });
-        if (intent!=null && intent.hasExtra("json")){
-            jsonArrayCB=intent.getStringExtra("json");
+
+        if (intent != null && intent.hasExtra("json")) {
+            jsonArrayCB = intent.getStringExtra("json");
         }
         if(jsonArrayCB!=null) {
-            Log.v("Linear","True");
             try {
                 JSONObject obj = new JSONObject(jsonArrayCB);
                 id = obj.optString("id");
-                poster_path = "http://image.tmdb.org/t/p/w185/";
-                poster_path += obj.optString("poster_path").toString();
+
+                poster_path = "http://image.tmdb.org/t/p/w185/" + obj.optString("poster_path").toString();
                 Picasso.with(getActivity()).load(poster_path).into((ImageView) view.findViewById(R.id.image_detail));
-                movieName = obj.optString("original_title").toString();
-                TextView orTV =
-                        ((TextView) view.findViewById(R.id.movieName));
-                orTV.setText(movieName);
-                releaseDate = obj.optString("release_date").toString();
-                releaseDate = releaseDate.substring(0, 4);
-                Log.v("Release", releaseDate);
+
+                TextView orTV = ((TextView) view.findViewById(R.id.movieName));
+                orTV.setText(obj.optString("original_title").toString());
+
                 TextView releaseTV = ((TextView) view.findViewById(R.id.releaseDate));
-                releaseTV.setText(releaseDate);
-                overview = obj.optString("overview").toString();
+                releaseTV.setText(obj.optString("release_date").toString().substring(0, 4));
+
                 TextView overViewTV = (TextView) view.findViewById(R.id.overviewTV);
-                overViewTV.setText(overview);
-                voteAverage = obj.optString("vote_average").toString();
-                voteAverage += "/10";
+                overViewTV.setText(obj.optString("overview").toString());
+
                 TextView voteAverageTV = (TextView) view.findViewById(R.id.voteAverageTV);
-                voteAverageTV.setText(voteAverage);
+                voteAverageTV.setText(obj.optString("vote_average").toString() + "/10");
+
+                ScrollView scrollView = (ScrollView) view.findViewById(R.id.scrollViewDetailMovie);
+                scrollView.setVisibility(View.VISIBLE);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         else {
-            LinearLayout linearLayout= (LinearLayout) view.findViewById(R.id.detailMovie);
-            linearLayout.setVisibility(View.INVISIBLE);
+            ScrollView scrollView = (ScrollView) view.findViewById(R.id.scrollViewDetailMovie);
+            scrollView.setVisibility(View.INVISIBLE);
         }
-
         return view;
     }
 
@@ -146,7 +133,6 @@ public class DetailMovieFragment extends Fragment {
         fetchVideos.execute(id);
         FetchReviews fetchReviews =new FetchReviews();
         fetchReviews.execute(id);
-
      //   Log.v("Youtube",videos[0]);
     }
 
@@ -236,7 +222,7 @@ public class DetailMovieFragment extends Fragment {
                 }
                 videoAdapter.addUrl(videos);
                 Log.v("URLS", videos[0]);
-                listView.setAdapter(videoAdapter);
+                videoListView.setAdapter(videoAdapter);
             }
 
         }
