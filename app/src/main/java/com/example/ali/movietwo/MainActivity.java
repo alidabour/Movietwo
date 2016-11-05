@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback{
+public class MainActivity extends AppCompatActivity implements MovieRecycleAdapter.Callback {
     boolean mTwoPane;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     }
 
     @Override
-    public void onItemSelected(String jsonArrayCB) {
+    public void onItemSelected(Movie movie) {
         if(mTwoPane){
             Bundle agrs = new Bundle();
-            agrs.putString("json",jsonArrayCB);
+            agrs.putString("id", movie.getId());
+            agrs.putString("title", movie.getTitle());
             DetailMovieFragment fragment = new DetailMovieFragment();
             fragment.setArguments(agrs);
             getSupportFragmentManager().beginTransaction()
@@ -72,7 +74,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
                     .commit();
         }else {
            Intent intent = new Intent(this,DetailMovie.class)
-                           .putExtra("json",jsonArrayCB);
+                   .putExtra("id", movie.getId());
+            intent.putExtra("title", movie.getTitle());
+            intent.putExtra("poster_path", movie.getPoster_path());
+            intent.putExtra("backdrop_path", movie.getBackdrop_path());
+            intent.putExtra("overview", movie.getOverview());
+            intent.putExtra("release_date", movie.getRelaseDate());
+            Log.v("Test", "PosterPAthMMainActibvit" + movie.getPoster_path());
             startActivity(intent);
         }
 

@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,16 +29,20 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivityFragment extends Fragment {
-    final static String api_key = "Your Key";
+    final static String api_key = "Add_Your_API_KEY";
     String sort_by = "popularity.desc";
     String poster_path[];
+    String title[];
     JSONArray jsonArray;
     JSONObject child;
     FetchURL fetchURL;
     View view;
+    Movie[] movies;
     GridView gridView;
     private ImageAdapter movieAdapter;
     private ImageAdapter imageAdapter;
+    RecyclerView recyclerView;
+    MovieRecycleAdapter movieRecycleAdapter;
     public MainActivityFragment() {
     }
 
@@ -45,7 +51,11 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_main, container, false);
-        gridView = (GridView) view.findViewById(R.id.grid_view);
+        //gridView = (GridView) view.findViewById(R.id.grid_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
         return view;
     }
 
@@ -72,13 +82,13 @@ public class MainActivityFragment extends Fragment {
                 sort_by=getString(R.string.pref_sort_popular);
                 fetchURL=new FetchURL();
                 fetchURL.execute(sort_by);
-                gridView.setVisibility(View.VISIBLE);
+                //gridView.setVisibility(View.VISIBLE);
 
             }else if (sortType.equals(getString(R.string.pref_sort_highRated))){
                 sort_by=getString(R.string.pref_sort_highRated);
                 fetchURL=new FetchURL();
                 fetchURL.execute(sort_by);
-                gridView.setVisibility(View.VISIBLE);
+                //gridView.setVisibility(View.VISIBLE);
 
             }
             else //if(sortType.equals("favorites"))
@@ -96,6 +106,7 @@ public class MainActivityFragment extends Fragment {
 
                     String path_url[] = new String[total];
                     poster_path = new String[total];
+                         //title = new String[total];
                     path_url[0] = "";
                     int j = 0;
                     jsonArray = new JSONArray();
@@ -115,21 +126,25 @@ public class MainActivityFragment extends Fragment {
                             child = jsonArray.getJSONObject(i);
                             poster_path[i] = "http://image.tmdb.org/t/p/w185/";
                             poster_path[i] += child.optString("poster_path");
+                            //title[i] = child.optString("title");
+                            //Log.v("Test",title[i]);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
 
                     }
-                    gridView.clearChoices();
-                    imageAdapter = new ImageAdapter(getActivity(), poster_path);
-                    gridView.setAdapter(null);
-                    gridView.setAdapter(imageAdapter);
+                         // gridView.clearChoices();
+                         // imageAdapter = new ImageAdapter(getActivity(), poster_path);
+                         //gridView.setAdapter(null);
+                         //gridView.setAdapter(imageAdapter);
+                         movieRecycleAdapter = new MovieRecycleAdapter(getContext(), movies);
+                         recyclerView.setAdapter(movieRecycleAdapter);
                 }
                      else {
-                         gridView.setVisibility(View.INVISIBLE);
+                         // gridView.setVisibility(View.INVISIBLE);
                      }
             }
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+/*        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -142,17 +157,17 @@ public class MainActivityFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
 
 
     }
 
-    public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        void onItemSelected(String jsonArrayCB);
-    }
+//    public interface Callback {
+//        /**
+//         * DetailFragmentCallback for when an item has been selected.
+//         */
+//        void onItemSelected(String jsonArrayCB);
+//    }
 
     public class FetchURL extends AsyncTask<String, Void, String[]> {
         private String[] getDataFromJson(String movieStr) throws JSONException{
@@ -160,11 +175,23 @@ public class MainActivityFragment extends Fragment {
             jsonArray=movieJson.optJSONArray("results");
 
             String[] resultStrs = new String[jsonArray.length()];
+            movies = new Movie[jsonArray.length()];
+            title = new String[jsonArray.length()];
             for (int i=0; i<jsonArray.length(); i++){
                 child =jsonArray.getJSONObject(i);
                 resultStrs[i]="http://image.tmdb.org/t/p/w185/";
                 resultStrs[i]+=child.optString("poster_path").toString();
+                movies[i] = new Movie();
+                movies[i].setTitle(child.optString("title"));
+                movies[i].setPoster_path(child.optString("poster_path").toString());
+                movies[i].setId(child.optString("id"));
+                movies[i].setBackdrop_path("http://image.tmdb.org/t/p/w780/" + child.optString("backdrop_path"));
+                movies[i].setOverview(child.optString("overview"));
+                movies[i].setRelaseDate(child.optString("release_date"));
+                Log.v("Test", "Movie id:" + movies[i].getId());
+                title[i] = child.optString("title");
                 Log.v("Poster", resultStrs[i]);
+                Log.v("Title", title[i]);
 
             }
             return resultStrs;
@@ -188,7 +215,8 @@ public class MainActivityFragment extends Fragment {
                         .appendQueryParameter(APPID_PARAM, api_key)
                         .build();
                URL url = new URL(builtUri.toString());
-                Log.v("Link",url.toString());
+
+                Log.v("Test", "Link: " + url.toString());
                 // Create the request to MovieDB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -233,8 +261,10 @@ public class MainActivityFragment extends Fragment {
             if(s!=null){
             super.onPostExecute(s);
             poster_path=s;
-            movieAdapter=new ImageAdapter(getActivity(),poster_path);
-            gridView.setAdapter(movieAdapter);
+                // movieAdapter=new ImageAdapter(getActivity(),poster_path);
+                // gridView.setAdapter(movieAdapter);
+                movieRecycleAdapter = new MovieRecycleAdapter(getContext(), movies);
+                recyclerView.setAdapter(movieRecycleAdapter);
 
         }}
     }

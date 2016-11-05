@@ -21,10 +21,10 @@ public class DetailMovie extends AppCompatActivity {
 //                    .add(R.id.detail_container,new DetailMovieFragment())
 //                    .commit();
 //        }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
