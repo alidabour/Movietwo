@@ -18,7 +18,6 @@ public class Movie {
     String backdrop_path;
     String title;
     String overview;
-
     String relaseDate;
 
     public String getRelaseDate() {
